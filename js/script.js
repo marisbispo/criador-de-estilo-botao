@@ -5,14 +5,6 @@ const css = document.querySelector('.css');
 
 controles.addEventListener('change', handleChange);
 
-function handleChange(event) {
-  const name = event.target.name;
-  const value = event.target.value;
-  //console.log(name, value);
-  handleStyle[name](value);
-  showCss();
-}
-
 const handleStyle = {
   element: btn,
   text(value) {
@@ -46,6 +38,30 @@ const handleStyle = {
     this.element.style.cursor = value;
   },
 };
+
+function handleChange(event) {
+  const name = event.target.name;
+  const value = event.target.value;
+  //console.log(name, value);
+  handleStyle[name](value);
+  saveValues(name, value);
+  showCss();
+}
+
+function saveValues(name, value) {
+  localStorage[name] = value;
+}
+
+function setValues() {
+  const properties = Object.keys(localStorage);
+  properties.forEach((propertie) => {
+    handleStyle[propertie](localStorage[propertie]);
+    controles.elements[propertie].value = localStorage[propertie];
+  });
+  showCss();
+}
+
+setValues();
 
 function showCss() {
   css.innerHTML =
